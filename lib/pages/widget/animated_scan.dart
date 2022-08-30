@@ -1,3 +1,6 @@
+// ignore_for_file: must_be_immutable
+// Verificar inmutable
+
 import 'package:flutter/material.dart';
 
 class ScannerAnimation extends StatefulWidget {
@@ -12,28 +15,26 @@ class ScannerAnimation extends StatefulWidget {
 class _CuadradoAnimadoState extends State<ScannerAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
-
-  late Animation<double> opacidad;
-
-  late Animation<double> moverAbajo;
-  late Animation<double> moverArriba;
-  late Animation<double> estatico;
+  late Animation<double> opacity;
+  late Animation<double> moveDown;
+  late Animation<double> moveUp;
+  late Animation<double> staticAnimation;
 
   @override
   void initState() {
     controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 600));
 
-    opacidad = Tween(begin: 0.6, end: 0.1).animate(CurvedAnimation(
+    opacity = Tween(begin: 0.6, end: 0.1).animate(CurvedAnimation(
         parent: controller,
         curve: const Interval(0.0, 1.0, curve: Curves.easeInExpo)));
 
-    moverAbajo = Tween(begin: -8.0, end: 52.0)
+    moveDown = Tween(begin: -8.0, end: 52.0)
         .animate(CurvedAnimation(parent: controller, curve: Curves.easeInSine));
 
-    moverArriba = Tween(begin: -12.0, end: -72.0)
+    moveUp = Tween(begin: -12.0, end: -72.0)
         .animate(CurvedAnimation(parent: controller, curve: Curves.easeInSine));
-    estatico = Tween(begin: -4.0, end: -4.0)
+    staticAnimation = Tween(begin: -4.0, end: -4.0)
         .animate(CurvedAnimation(parent: controller, curve: Curves.easeInSine));
 
     controller.addListener(() {
@@ -64,13 +65,13 @@ class _CuadradoAnimadoState extends State<ScannerAnimation>
         return Stack(
           children: [
             SizedBox(
-              width: 500,
+              width: double.infinity,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _Linea(),
                   Transform.translate(
-                    offset: Offset(0, 0 + estatico.value),
+                    offset: Offset(0, 0 + staticAnimation.value),
                     child: Opacity(
                       opacity: 1.0,
                       child: Transform.scale(
@@ -80,9 +81,9 @@ class _CuadradoAnimadoState extends State<ScannerAnimation>
                     ),
                   ),
                   Transform.translate(
-                    offset: Offset(0, 0 + moverAbajo.value),
+                    offset: Offset(0, 0 + moveDown.value),
                     child: Opacity(
-                      opacity: opacidad.value,
+                      opacity: opacity.value,
                       child: Transform.scale(
                         scale: 1.0,
                         child: _Rectangulo(),
@@ -90,9 +91,9 @@ class _CuadradoAnimadoState extends State<ScannerAnimation>
                     ),
                   ),
                   Transform.translate(
-                    offset: Offset(0, 0 + moverArriba.value),
+                    offset: Offset(0, 0 + moveUp.value),
                     child: Opacity(
-                      opacity: opacidad.value,
+                      opacity: opacity.value,
                       child: Transform.scale(
                         scale: 1.0,
                         child: _Rectangulo(),
@@ -112,7 +113,7 @@ class _CuadradoAnimadoState extends State<ScannerAnimation>
                   MaterialButton(
                       onPressed: () => widget.callback!(),
                       child: const Text(
-                        'INACAP',
+                        'SCANNER',
                         style: TextStyle(color: Colors.white, fontSize: 12),
                       ))
                 ],

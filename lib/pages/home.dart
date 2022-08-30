@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scanner_widget/pages/widget/scanner_widget.dart';
@@ -20,17 +18,17 @@ class HomeView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 30),
-                    child: Image.asset('assets/logo.png')),
-                ScannerWidget(
-                    onDoubleTapClose: true,
-                    isOpenScanner: scannerProvider.isOpenScanner,
-                    onScannerRcollect: (barcode, _) {
-                      scannerProvider.isOpenScanner = false;
-                      codeController.text = barcode.rawValue!;
-                    }),
+                const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                    child: FlutterLogo(size: 120)),
+                if (scannerProvider.isOpenScanner)
+                  ScannerWidget(
+                      onDoubleTapClose: true,
+                      isOpenScanner: scannerProvider.isOpenScanner,
+                      onScanner: (barcode, _) {
+                        scannerProvider.isOpenScanner = false;
+                        codeController.text = barcode.rawValue!;
+                      }),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
@@ -53,7 +51,8 @@ class HomeView extends StatelessWidget {
                 color: Colors.grey.shade800,
                 onPressed: () {
                   codeController.clear();
-                  scannerProvider.isOpenScanner = true;
+                  scannerProvider.isOpenScanner =
+                      !scannerProvider.isOpenScanner;
                 },
                 child: const Text('ESCANEAR'),
               ),

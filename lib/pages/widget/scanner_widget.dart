@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:scanner_widget/pages/widget/animated_scan.dart';
 
+// ignore: must_be_immutable
 class ScannerWidget extends StatefulWidget {
   final Function(Barcode, MobileScannerArguments?) onScanner;
 
   bool? isOpenScanner;
-  bool? onDoubleTapClose;
-  bool? torchEnabled;
-  bool? timerEnabled;
+  final bool onDoubleTapClose;
+  final bool torchEnabled;
+  final bool timerEnabled;
 
   ScannerWidget({
     Key? key,
@@ -21,15 +22,14 @@ class ScannerWidget extends StatefulWidget {
     required this.onScanner,
   }) : super(key: key);
   @override
-  _ScanditWidgetState createState() => _ScanditWidgetState();
+  ScanditWidgetState createState() => ScanditWidgetState();
 }
 
-class _ScanditWidgetState extends State<ScannerWidget> {
+class ScanditWidgetState extends State<ScannerWidget> {
   MobileScannerController? scannerController;
 
   late Timer _timer = Timer(const Duration(seconds: 20), () {});
 
-  // TODO: MODIFICAR LIBRERIA SCANNER
   final Barcode barcodeR = Barcode(rawValue: '');
   final MobileScannerArguments argumentR =
       MobileScannerArguments(size: const Size(0, 0), hasTorch: false);
@@ -44,7 +44,7 @@ class _ScanditWidgetState extends State<ScannerWidget> {
     if (widget.isOpenScanner!) {
       scannerController =
           MobileScannerController(torchEnabled: widget.torchEnabled);
-      if (widget.timerEnabled!) {
+      if (widget.timerEnabled) {
         resetPauseCameraTimer();
       }
     } else {
@@ -85,7 +85,7 @@ class _ScanditWidgetState extends State<ScannerWidget> {
       curve: Curves.decelerate,
       child: GestureDetector(
         onDoubleTap: () async {
-          if (widget.onDoubleTapClose!) {
+          if (widget.onDoubleTapClose) {
             deactivate();
             callBackScanner();
             setState(() {});
@@ -93,13 +93,13 @@ class _ScanditWidgetState extends State<ScannerWidget> {
         },
         child: SizedBox(
           height: widget.isOpenScanner! ? 200 : 0,
-          child: _scannerRCollect(),
+          child: _scanner(),
         ),
       ),
     );
   }
 
-  Widget _scannerRCollect() {
+  Widget _scanner() {
     if (widget.isOpenScanner!) {
       activateScanner();
 
@@ -110,13 +110,14 @@ class _ScanditWidgetState extends State<ScannerWidget> {
               controller: scannerController,
               onDetect: widget.onScanner),
           Container(
-              alignment: Alignment.topRight,
-              child:
-                  ScannerAnimation(callback: scannerController?.toggleTorch)),
+            alignment: Alignment.topRight,
+            child: ScannerAnimation(
+              callback: scannerController?.toggleTorch,
+            ),
+          ),
         ],
       );
-    } else {
-      return const SizedBox.shrink();
     }
+    return const SizedBox.shrink();
   }
 }

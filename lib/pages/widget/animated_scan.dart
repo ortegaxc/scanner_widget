@@ -1,18 +1,18 @@
-// ignore_for_file: must_be_immutable
-// Verificar inmutable
-
 import 'package:flutter/material.dart';
 
 class ScannerAnimation extends StatefulWidget {
-  void Function()? callback;
+  final Function()? callback;
 
-  ScannerAnimation({Key? key, required this.callback}) : super(key: key);
+  const ScannerAnimation({
+    Key? key,
+    required this.callback,
+  }) : super(key: key);
 
   @override
-  _CuadradoAnimadoState createState() => _CuadradoAnimadoState();
+  ScannerAnimationState createState() => ScannerAnimationState();
 }
 
-class _CuadradoAnimadoState extends State<ScannerAnimation>
+class ScannerAnimationState extends State<ScannerAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> opacity;
@@ -60,7 +60,7 @@ class _CuadradoAnimadoState extends State<ScannerAnimation>
 
     return AnimatedBuilder(
       animation: controller,
-      child: _Rectangulo(),
+      child: _Rectangle(),
       builder: (BuildContext context, Widget? childRectangulo) {
         return Stack(
           children: [
@@ -69,14 +69,14 @@ class _CuadradoAnimadoState extends State<ScannerAnimation>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _Linea(),
+                  _Line(),
                   Transform.translate(
                     offset: Offset(0, 0 + staticAnimation.value),
                     child: Opacity(
                       opacity: 1.0,
                       child: Transform.scale(
                         scale: 1.0,
-                        child: _Rectangulo(),
+                        child: _Rectangle(),
                       ),
                     ),
                   ),
@@ -86,7 +86,7 @@ class _CuadradoAnimadoState extends State<ScannerAnimation>
                       opacity: opacity.value,
                       child: Transform.scale(
                         scale: 1.0,
-                        child: _Rectangulo(),
+                        child: _Rectangle(),
                       ),
                     ),
                   ),
@@ -96,7 +96,7 @@ class _CuadradoAnimadoState extends State<ScannerAnimation>
                       opacity: opacity.value,
                       child: Transform.scale(
                         scale: 1.0,
-                        child: _Rectangulo(),
+                        child: _Rectangle(),
                       ),
                     ),
                   ),
@@ -126,7 +126,7 @@ class _CuadradoAnimadoState extends State<ScannerAnimation>
   }
 }
 
-class _Rectangulo extends StatelessWidget {
+class _Rectangle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -137,7 +137,7 @@ class _Rectangulo extends StatelessWidget {
   }
 }
 
-class _Linea extends StatelessWidget {
+class _Line extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

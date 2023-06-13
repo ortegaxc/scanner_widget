@@ -6,7 +6,7 @@ import 'package:scanner_widget/provider/scanner_provider.dart';
 class HomeView extends StatelessWidget {
   HomeView({Key? key}) : super(key: key);
 
-  TextEditingController codeController = TextEditingController();
+  final TextEditingController codeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class HomeView extends StatelessWidget {
                   child: TextField(
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: 'Resultado scanner',
+                      hintText: 'Scan result',
                     ),
                     controller: codeController,
                   ),
@@ -54,7 +54,7 @@ class HomeView extends StatelessWidget {
                   scannerProvider.isOpenScanner =
                       !scannerProvider.isOpenScanner;
                 },
-                child: const Text('ESCANEAR'),
+                child: const Text('SCAN'),
               ),
             ),
           )

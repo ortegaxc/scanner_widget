@@ -12,24 +12,30 @@ class AppState extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ScannerProvider(), lazy: false)
+        ChangeNotifierProvider(
+          create: (_) => ScannerProvider(),
+          lazy: false,
+        )
       ],
-      child: MyApp(),
+      child: const MyApp(),
     );
   }
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
       home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Scanner'),
-          ),
-          body: HomeView()),
+        appBar: AppBar(
+          title: const Text('Scanner'),
+        ),
+        body: HomeView(),
+      ),
     );
   }
 }
